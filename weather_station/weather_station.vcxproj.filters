@@ -30,12 +30,24 @@
     <ClInclude Include="resource.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="SlidingHistory.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="AWeatherInference.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="ArduinoWeahterInference.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AWeatherDisplay.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="LCDWeatherDisplay.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="ArduinoWeahterInference.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>

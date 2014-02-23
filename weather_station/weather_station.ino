@@ -7,7 +7,7 @@
 #include "LCDWeatherDisplay.h"
 #include <SPI.h>
 #include <OneWire.h>
-
+#include "SlidingHistory.h"
 int dallasPin = 2;
 int dht11Pin = 9;
 
@@ -102,6 +102,8 @@ void captureDHT11Temperature(){
 
 void setup()
 {
+	
+
 	pinMode(dallasPin, INPUT);
 	pinMode(dht11Pin, INPUT);
 	bmp.begin();
@@ -114,6 +116,8 @@ void setup()
 	// set the resolution to 10 bit (good enough?)
 	sensors.setResolution(outsideThermometer, 12);
 
+
+	ArduinoWeahterInference * inference = new ArduinoWeahterInference();
 
 	display = new LCDWeatherDisplay();
 	

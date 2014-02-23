@@ -73,12 +73,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ArduinoWeahterInference.h" />
     <ClInclude Include="AWeatherDisplay.h" />
     <ClInclude Include="LCDWeatherDisplay.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="SlidingHistory.h" />
     <ClInclude Include="Visual Micro\.weather_station.vsarduino.h" />
+    <ClInclude Include="AWeatherInference.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ArduinoWeahterInference.cpp" />
     <ClCompile Include="AWeatherDisplay.cpp" />
     <ClCompile Include="LCDWeatherDisplay.cpp" />
   </ItemGroup>

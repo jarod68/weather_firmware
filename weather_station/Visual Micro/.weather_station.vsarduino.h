@@ -44,7 +44,11 @@ void handleError();
 #include "C:\Users\matt\Source\Repos\arduino\weather_station\weather_station.ino"
 #include "C:\Users\matt\Source\Repos\arduino\weather_station\AWeatherDisplay.cpp"
 #include "C:\Users\matt\Source\Repos\arduino\weather_station\AWeatherDisplay.h"
+#include "C:\Users\matt\Source\Repos\arduino\weather_station\AWeatherInference.h"
+#include "C:\Users\matt\Source\Repos\arduino\weather_station\ArduinoWeahterInference.cpp"
+#include "C:\Users\matt\Source\Repos\arduino\weather_station\ArduinoWeahterInference.h"
 #include "C:\Users\matt\Source\Repos\arduino\weather_station\LCDWeatherDisplay.cpp"
 #include "C:\Users\matt\Source\Repos\arduino\weather_station\LCDWeatherDisplay.h"
+#include "C:\Users\matt\Source\Repos\arduino\weather_station\SlidingHistory.h"
 #include "C:\Users\matt\Source\Repos\arduino\weather_station\resource.h"
 #endif

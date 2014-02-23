@@ -3,7 +3,6 @@
 
 AWeatherDisplay::AWeatherDisplay() :
 indoorTemperature(-1), indoorHumidity(-1), indoorPressure(-1), outdoorTemperature(-1)
-
 {
 }
 

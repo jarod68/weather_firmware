@@ -19,11 +19,8 @@
  uint8_t LCDWeatherDisplay::degres[8] = { 0x1c, 0x14, 0x1c, 0x00, 0x00, 0x00, 0x00 };
 
 
- LCDWeatherDisplay::LCDWeatherDisplay() :
-	 AWeatherDisplay(), lcd(new LiquidCrystal_I2C(lcd_Addr, lcd_cols, lcd_rows)), previousIndoorTemperature(-1),
-previousIndoorHumidity(-1),
-previousIndoorPressure(-1),
-previousOutdoorTemperature(-1)
+ LCDWeatherDisplay::LCDWeatherDisplay(AWeatherInference<double> * inference) :
+	 AWeatherDisplay(), lcd(new LiquidCrystal_I2C(lcd_Addr, lcd_cols, lcd_rows)), _inference(inference)
 {
 	lcd->init();
 	lcd->createChar(up_right_cross_address, up_right_cross);
@@ -44,9 +41,8 @@ void LCDWeatherDisplay::display()
 	lcd->print("temp = " + doubleToString(getIndoorTemperature())+' ');
 	lcd->write(degres_address); lcd->print('c');
 	lcd->setCursor(19, 0);
-	if (getIndoorTemperature() == previousIndoorTemperature)
-		lcd->print('=');
-	else if (getIndoorTemperature() > previousIndoorTemperature)
+
+	 if (_inference->getIndoorTemperatureTendency == Tendency::Rising)
 		lcd->write(up_right_cross_address); 
 	else 
 		lcd->write(down_right_cross_address);
@@ -55,9 +51,7 @@ void LCDWeatherDisplay::display()
 	lcd->setCursor(4, 1);
 	lcd->print("hum  = " + doubleToString(getIndoorHumidity()) + " %");
 	lcd->setCursor(19, 1);
-	if (getIndoorHumidity() == previousIndoorHumidity)
-		lcd->print('=');
-	else if (getIndoorHumidity() > previousIndoorHumidity)
+	if (_inference->getIndoorHumidityTendency == Tendency::Rising)
 		lcd->write(up_right_cross_address);
 	else 
 		lcd->write(down_right_cross_address);
@@ -65,9 +59,7 @@ void LCDWeatherDisplay::display()
 	lcd->setCursor(4, 2);
 	lcd->print("pres = " + doubleToString(getIndoorPressure()) + "hPa");
 	lcd->setCursor(19, 2);
-	if (getIndoorPressure() == previousIndoorPressure)
-		lcd->print('=');
-	else if (getIndoorPressure() > previousIndoorPressure) 
+	if (_inference->getIndoorPressureTendency == Tendency::Rising)
 		lcd->write(up_right_cross_address);
 	else 
 		lcd->write(down_right_cross_address);
@@ -78,9 +70,7 @@ void LCDWeatherDisplay::display()
 	lcd->print("temp = " + doubleToString(getOutdoorTemperature())+' ');
 	lcd->write(degres_address); lcd->print('c');
 	lcd->setCursor(19, 3);
-	if (getOutdoorTemperature() == previousOutdoorTemperature)
-		lcd->print('=');
-	else if (getOutdoorTemperature() > previousOutdoorTemperature) 
+	if (_inference->getOutdoorTemperatureTendency == Tendency::Rising)
 		lcd->write(up_right_cross_address);
 	else
 		lcd->write(down_right_cross_address);
@@ -96,25 +86,4 @@ String LCDWeatherDisplay::doubleToString(const double _double)
 	char buffer[24];
 	dtostrf(_double, 0, 1 ,buffer);
 	return String(buffer);
-}
-
-void LCDWeatherDisplay::setIndoorTemperature(double _indoorTemperature){
-	
-	previousIndoorTemperature = indoorTemperature;
-	indoorTemperature = _indoorTemperature;
-}
-void LCDWeatherDisplay::setIndoorHumidity(double _indoorHumidity){
-	
-	previousIndoorHumidity = indoorHumidity;
-	indoorHumidity = _indoorHumidity;
-}
-void LCDWeatherDisplay::setIndoorPressure(double _indoorPressure){
-
-	previousIndoorPressure = indoorPressure;
-	indoorPressure = _indoorPressure;
-}
-void LCDWeatherDisplay::setOutdoorTemperature(double _outdoorTemperature){
-
-	previousOutdoorTemperature = outdoorTemperature;
-	outdoorTemperature = _outdoorTemperature;
 }
