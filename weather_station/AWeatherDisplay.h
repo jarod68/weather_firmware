@@ -2,6 +2,8 @@
 #ifndef AWEATHERDISPLAY_H
 #define AWEATHERDISPLAY_H
 
+#include <Arduino.h>
+
 class AWeatherDisplay
 {
 public:
