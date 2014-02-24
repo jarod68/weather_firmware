@@ -3,9 +3,11 @@
 #ifndef ARDUINOWEATHERINFERENCE_H
 #define ARDUINOWEATHERINFERENCE_H
 
+#include <Arduino.h>
+
 #include "AWeatherInference.h"
 
-class ArduinoWeahterInference : protected AWeatherInference<double>
+class ArduinoWeahterInference : public AWeatherInference<double>
 {
 public:
 	ArduinoWeahterInference(size_t historySize, unsigned long delay);
