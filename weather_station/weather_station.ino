@@ -8,6 +8,9 @@
 #include <SPI.h>
 #include <OneWire.h>
 #include "SlidingHistory.h"
+#include "ArduinoWeahterInference.h"
+#include "AWeatherInference.h"
+
 int dallasPin = 2;
 int dht11Pin = 9;
 
@@ -21,7 +24,7 @@ DallasTemperature sensors(&oneWire);
 DeviceAddress outsideThermometer = { 0x28, 0xFD, 0xCC, 0x74, 0x05, 0x00, 0x00, 0xB6 };
 
 LCDWeatherDisplay * display = NULL;
-
+AWeatherInference<double> * inference = NULL;
 boolean isError = false;
 
 double insideTemperature = -1;
@@ -117,9 +120,9 @@ void setup()
 	sensors.setResolution(outsideThermometer, 12);
 
 
-	ArduinoWeahterInference * inference = new ArduinoWeahterInference();
+	inference = new ArduinoWeahterInference(32, 30000);
 
-	display = new LCDWeatherDisplay();
+	display = new LCDWeatherDisplay(inference);
 	
 }
 
@@ -132,6 +135,11 @@ void handleDisplay(){
 	display->setIndoorTemperature(insideTemperature);
 	display->setOutdoorTemperature(outsideTemperature);
 	display->setIndoorPressure(insidePressure);
+
+	inference->setIndoorHumidity(ceil(insideHumidity*10)/10);
+	inference->setIndoorTemperature(ceil(insideTemperature * 10) / 10);
+	inference->setOutdoorTemperature(ceil(outsideTemperature * 10) / 10);
+	inference->setIndoorPressure(ceil(insidePressure * 10) / 10);
 
 	display->display();
 	delay(100);
