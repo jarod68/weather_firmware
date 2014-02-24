@@ -1,5 +1,7 @@
 #include "LCDWeatherDisplay.h"
 
+#include "Tendency.h"
+
 #define  lcd_Addr 0x27
 #define  lcd_cols 20
 #define  lcd_rows 4
@@ -42,7 +44,7 @@ void LCDWeatherDisplay::display()
 	lcd->write(degres_address); lcd->print('c');
 	lcd->setCursor(19, 0);
 
-	 if (_inference->getIndoorTemperatureTendency == Tendency::Rising)
+	 if (_inference->getIndoorTemperatureTendency() == Rising)
 		lcd->write(up_right_cross_address); 
 	else 
 		lcd->write(down_right_cross_address);
@@ -51,7 +53,7 @@ void LCDWeatherDisplay::display()
 	lcd->setCursor(4, 1);
 	lcd->print("hum  = " + doubleToString(getIndoorHumidity()) + " %");
 	lcd->setCursor(19, 1);
-	if (_inference->getIndoorHumidityTendency == Tendency::Rising)
+	if (_inference->getIndoorHumidityTendency() == Rising)
 		lcd->write(up_right_cross_address);
 	else 
 		lcd->write(down_right_cross_address);
@@ -59,7 +61,7 @@ void LCDWeatherDisplay::display()
 	lcd->setCursor(4, 2);
 	lcd->print("pres = " + doubleToString(getIndoorPressure()) + "hPa");
 	lcd->setCursor(19, 2);
-	if (_inference->getIndoorPressureTendency == Tendency::Rising)
+	if (_inference->getIndoorPressureTendency() == Rising)
 		lcd->write(up_right_cross_address);
 	else 
 		lcd->write(down_right_cross_address);
@@ -70,7 +72,7 @@ void LCDWeatherDisplay::display()
 	lcd->print("temp = " + doubleToString(getOutdoorTemperature())+' ');
 	lcd->write(degres_address); lcd->print('c');
 	lcd->setCursor(19, 3);
-	if (_inference->getOutdoorTemperatureTendency == Tendency::Rising)
+	if (_inference->getOutdoorTemperatureTendency() == Rising)
 		lcd->write(up_right_cross_address);
 	else
 		lcd->write(down_right_cross_address);
