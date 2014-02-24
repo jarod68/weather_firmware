@@ -3,13 +3,11 @@
 #ifndef AWEATHERINFERENCE_H
 #define AWEATHERINFERENCE_H
 
+#include <Arduino.h>
+
+#include "Tendency.h"
 #include "SlidingHistory.h"
 
-enum Tendency {
-	Rising,
-	Falling,
-	Null
-};
 
 template<typename T>
 class AWeatherInference
@@ -38,7 +36,12 @@ public:
 		_indoorTemperaturesMean_curr(0),
 		_indoorHumiditiesMean_curr(0),
 		_indoorPressuresMean_curr(0),
-		_outdoorTemperaturesMean_curr(0)
+		_outdoorTemperaturesMean_curr(0),
+		_indoorTemperatures_insertTime(0),
+		_indoorHumidities_insertTime(0), 
+		_indoorPressures_insertTime(0),
+		_outdoorTemperatures_insertTime(0)
+
 	{
 	}
 
@@ -49,8 +52,9 @@ public:
 		if (time < _indoorTemperatures_insertTime || time >= _indoorTemperatures_insertTime + _indoorTemperatures_delay){
 
 			_indoorTemperaturesMean_prev = _indoorTemperaturesMean_curr;
-			this->_indoorTemperature->addToHistory(_indoorTemperature);
-			_indoorTemperaturesMean_curr = this->_indoorTemperature->mean();
+			this->_indoorTemperatures->addToHistory(_indoorTemperature);
+			_indoorTemperaturesMean_curr = this->_indoorTemperatures->mean();
+			_indoorTemperatures_insertTime = time;
 		}
 
 	}
@@ -59,10 +63,10 @@ public:
 		unsigned long time = getTime();
 
 		if (time < _indoorHumidities_insertTime || time >= _indoorHumidities_insertTime + _indoorHumidities_delay){
-
 			_indoorHumiditiesMean_prev = _indoorHumiditiesMean_curr;
 			this->_indoorHumidities->addToHistory(_indoorHumidity);
 			_indoorHumiditiesMean_curr = this->_indoorHumidities->mean();
+			_indoorHumidities_insertTime = time;
 		}
 
 
@@ -70,11 +74,12 @@ public:
 	void setIndoorPressure(T _indoorPressure){
 		unsigned long time = getTime();
 
-		if (time < indoorPressures_insertTime || time >= _indoorPressures_insertTime + _indoorPressures_delay){
+		if (time < _indoorPressures_insertTime || time >= _indoorPressures_insertTime + _indoorPressures_delay){
 
 			_indoorPressuresMean_prev = _indoorPressuresMean_curr;
 			this->_indoorPressures->addToHistory(_indoorPressure);
 			_indoorPressuresMean_curr = this->_indoorPressures->mean();
+			_indoorPressures_insertTime = time;
 		}
 
 
@@ -87,31 +92,31 @@ public:
 			_outdoorTemperaturesMean_prev = _outdoorTemperaturesMean_curr;
 			this->_outdoorTemperatures->addToHistory(_outdoorTemperature);
 			_outdoorTemperaturesMean_curr = this->_outdoorTemperatures->mean();
-
+			_outdoorTemperatures_insertTime = time;
 		}
-
-
 
 	}
 
+	
 	virtual Tendency getIndoorTemperatureTendency(){
 
-		return _indoorTemperaturesMean_curr > _indoorTemperaturesMean_prev ? Tendency::Rising : Tendency::Falling;
+		return _indoorTemperaturesMean_curr > _indoorTemperaturesMean_prev ? Rising : Falling;
 
 	}
 	virtual Tendency getIndoorHumidityTendency(){
 
-		return _indoorHumiditiesMean_curr > _indoorHumiditiesMean_prev ? Tendency::Rising : Tendency::Falling;
+		return _indoorHumiditiesMean_curr > _indoorHumiditiesMean_prev ? Rising : Falling;
 	}
 	virtual Tendency getIndoorPressureTendency(){
 
-		return _indoorPressuresMean_curr > _indoorPressuresMean_prev ? Tendency::Rising : Tendency::Falling;
+		return _indoorPressuresMean_curr > _indoorPressuresMean_prev ? Rising : Falling;
 	}
 	virtual Tendency getOutdoorTemperatureTendency(){
 
-		return _outdoorTemperaturesMean_curr > _outdoorTemperaturesMean_prev ? Tendency::Rising : Tendency::Falling;
+		return _outdoorTemperaturesMean_curr > _outdoorTemperaturesMean_prev ? Rising : Falling;
 
 	}
+
 	virtual unsigned long getTime(){ return 0; } //pure virtual method
 
 private:
