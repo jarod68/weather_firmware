@@ -2,7 +2,7 @@
 #include "Arduino.h"
 
 ArduinoWeahterInference::ArduinoWeahterInference(size_t historySize, unsigned long delay) :
-AWeatherInference(historySize, delay, delay, delay, delay)
+AWeatherInference<double>(historySize, delay, delay, delay, delay)
 {
 }
 
