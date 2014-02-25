@@ -10,8 +10,11 @@
 class ArduinoWeahterInference : public AWeatherInference<double>
 {
 public:
-	ArduinoWeahterInference(size_t historySize, unsigned long delay);
-	virtual unsigned long getTime();
+	ArduinoWeahterInference		(size_t historySize, unsigned long delay);
+
+	virtual		~ArduinoWeahterInference(){}
+
+	virtual		unsigned long	getTime();
 };
 
 #endif

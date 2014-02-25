@@ -13,15 +13,14 @@
 #define degres_address 4
 
 
+ uint8_t	LCDWeatherDisplay	::	up_right_cross	[8] = { 0x0, 0x0f, 0x03, 0x5, 0x09, 0x10, 0x0	};
+ uint8_t	LCDWeatherDisplay	::	down_left_cross	[8] = { 0x0, 0x01, 0x12, 0x14, 0x18, 0x1e, 0x0	};
+ uint8_t	LCDWeatherDisplay	::	up_left_cross	[8] = { 0x0, 0x1e, 0x18, 0x14, 0x12, 0x01, 0x0	};
+ uint8_t	LCDWeatherDisplay	::	down_right_cross[8] = { 0x0, 0x10, 0x09, 0x05, 0x03, 0x0f, 0x0	};
+ uint8_t	LCDWeatherDisplay	::	degres			[8] = { 0x1c, 0x14, 0x1c, 0x00, 0x00, 0x00, 0x00};
 
- uint8_t LCDWeatherDisplay::up_right_cross[8] = { 0x0, 0x0f, 0x03, 0x5, 0x09, 0x10, 0x0 };
- uint8_t LCDWeatherDisplay::down_left_cross[8] = { 0x0, 0x01, 0x12, 0x14, 0x18, 0x1e, 0x0 };
- uint8_t LCDWeatherDisplay::up_left_cross[8] = { 0x0, 0x1e, 0x18, 0x14, 0x12, 0x01, 0x0 };
- uint8_t LCDWeatherDisplay::down_right_cross[8] = { 0x0, 0x10, 0x09, 0x05, 0x03, 0x0f, 0x0 };
- uint8_t LCDWeatherDisplay::degres[8] = { 0x1c, 0x14, 0x1c, 0x00, 0x00, 0x00, 0x00 };
 
-
- LCDWeatherDisplay::LCDWeatherDisplay(AWeatherInference<double> * inference) :
+ LCDWeatherDisplay	::	LCDWeatherDisplay	(AWeatherInference<double> * inference) :
 	 AWeatherDisplay(), lcd(new LiquidCrystal_I2C(lcd_Addr, lcd_cols, lcd_rows)), _inference(inference)
 {
 	lcd->init();
@@ -33,7 +32,11 @@
 
 }
 
-void LCDWeatherDisplay::display()
+ LCDWeatherDisplay	::	~LCDWeatherDisplay	(){ 
+	 delete _inference;
+ }
+
+void	LCDWeatherDisplay	::	display	()
 {
 
 	lcd->backlight();
@@ -79,11 +82,11 @@ void LCDWeatherDisplay::display()
 
 }
 
-void LCDWeatherDisplay::clear()
+void	LCDWeatherDisplay	::	clear	()
 {
 	lcd->clear();
 }
-String LCDWeatherDisplay::doubleToString(const double _double)
+String	LCDWeatherDisplay	::	doubleToString	(const double _double)
 {
 	char buffer[24];
 	dtostrf(_double, 0, 1 ,buffer);

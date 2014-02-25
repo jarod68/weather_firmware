@@ -1,12 +1,14 @@
+
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BMP085_U.h>
 #include <dht11.h>
 #include <DallasTemperature.h>
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
-#include "LCDWeatherDisplay.h"
 #include <SPI.h>
 #include <OneWire.h>
+
+#include "LCDWeatherDisplay.h"
 #include "SlidingHistory.h"
 #include "ArduinoWeahterInference.h"
 #include "AWeatherInference.h"
