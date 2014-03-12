@@ -7,17 +7,19 @@
 #include <LiquidCrystal_I2C.h>
 #include <SPI.h>
 #include <OneWire.h>
+#include <MemoryFree.h>
 
 #include "LCDWeatherDisplay.h"
 #include "SlidingHistory.h"
-#include "ArduinoWeahterInference.h"
-#include "AWeatherInference.h"
-
+#include "ArduinoPronosticStrategy.h"
+#include "ArduinoTendencyStrategy.h"
+#include "WeatherInference.h"
+#include "APronosticStrategy.h"
 int dallasPin = 2;
 int dht11Pin = 9;
 
 dht11 DHT11;
-//Adafruit_BMP085_Unified bmp = Adafruit_BMP085_Unified(10085);
+
 Adafruit_BMP085_Unified bmp = Adafruit_BMP085_Unified(119);
 
 // Setup a oneWire instance to communicate with any OneWire devices
@@ -25,8 +27,11 @@ OneWire oneWire(dallasPin);
 DallasTemperature sensors(&oneWire);
 DeviceAddress outsideThermometer = { 0x28, 0xFD, 0xCC, 0x74, 0x05, 0x00, 0x00, 0xB6 };
 
-LCDWeatherDisplay * display = NULL;
-AWeatherInference<double> * inference = NULL;
+LCDWeatherDisplay				*	display					= NULL;
+WeatherInference<double>		*	inference				= NULL;
+ArduinoTendencyStrategy<double> *	tendencyStrategy		= NULL;
+APronosticStrategy<double>		*	pronosticStrategy		= NULL;
+
 boolean isError = false;
 
 double insideTemperature = -1;
@@ -107,8 +112,6 @@ void captureDHT11Temperature(){
 
 void setup()
 {
-	
-
 	pinMode(dallasPin, INPUT);
 	pinMode(dht11Pin, INPUT);
 	bmp.begin();
@@ -121,14 +124,17 @@ void setup()
 	// set the resolution to 10 bit (good enough?)
 	sensors.setResolution(outsideThermometer, 12);
 
-
-	inference = new ArduinoWeahterInference(32, 30000);
-
+	pronosticStrategy = new ArduinoPronosticStrategy<double>();
+	tendencyStrategy = new ArduinoTendencyStrategy<double>(8, 30, 30, 30, 30);
+	
+	inference = new WeatherInference<double>(tendencyStrategy, pronosticStrategy);
+	
 	display = new LCDWeatherDisplay(inference);
 	
 }
 
 void handleDisplay(){
+
 	captureDallasTemperature();
 	captureDHT11Temperature();
 	captureBMP180();
@@ -137,11 +143,11 @@ void handleDisplay(){
 	display->setIndoorTemperature(insideTemperature);
 	display->setOutdoorTemperature(outsideTemperature);
 	display->setIndoorPressure(insidePressure);
-
-	inference->setIndoorHumidity(ceil(insideHumidity*10)/10);
-	inference->setIndoorTemperature(ceil(insideTemperature * 10) / 10);
-	inference->setOutdoorTemperature(ceil(outsideTemperature * 10) / 10);
-	inference->setIndoorPressure(ceil(insidePressure * 10) / 10);
+	
+	inference->appendIndoorHumidity(insideHumidity);
+	inference->appendIndoorTemperature(insideTemperature);
+	inference->appendOutdoorTemperature(outsideTemperature);
+	inference->appendIndoorPressure(insidePressure);
 
 	display->display();
 	delay(100);
@@ -157,4 +163,8 @@ void loop()
 {
 	handleDisplay();
 
+	Serial.print("freeMemory()=");
+	Serial.println(freeMemory());
+
+	delay(1000);
 }
