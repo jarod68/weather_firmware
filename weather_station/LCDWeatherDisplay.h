@@ -6,30 +6,57 @@
 #include <Wire.h> 
 #include <LiquidCrystal_I2C.h>
 
-#include "AWeatherInference.h"
+#include "WeatherInference.h"
 #include "AWeatherDisplay.h"
+#include "Pronostic.h"
 
 class LCDWeatherDisplay : public AWeatherDisplay
 {
 public:
-	LCDWeatherDisplay	(AWeatherInference<double> * inference);
+	LCDWeatherDisplay(WeatherInference<double> * inference);
 
 	virtual		~LCDWeatherDisplay();
 
 	virtual		void	display();
 	virtual		void	clear();
-	inline		String	doubleToString	(const double _double);
+	virtual		void	displayCloud	(const unsigned int	line, const unsigned int row);
+	virtual		void	displaySun		(const unsigned int	line, const unsigned int row);
+	virtual		void	displayRain		(const unsigned int	line, const unsigned int row);
+	virtual		void	displayUpArrow	();
+	virtual		void	displayDownArrow();
+	virtual		void	displayDegres	();
+
+	inline		String	doubleToString	(const double		_double);
 
 
 private:
 	LiquidCrystal_I2C			*	lcd;
-	AWeatherInference<double>	*	_inference;
+	WeatherInference<double>	*	_inference;
 
-	static		uint8_t		up_right_cross[8];
-	static		uint8_t		down_left_cross[8];
-	static		uint8_t		up_left_cross[8];
-	static		uint8_t		down_right_cross[8];
-	static		uint8_t		degres[8];
+	static		uint8_t		up_right_arrow	[];
+	static		uint8_t		down_left_arrow	[];
+	static		uint8_t		up_left_arrow	[];
+	static		uint8_t		down_right_arrow[];
+	static		uint8_t		degres			[];
+	static		uint8_t		sun_00			[];
+	static		uint8_t		sun_01			[];
+	static		uint8_t		sun_02			[];
+	static		uint8_t		sun_10			[];
+	static		uint8_t		sun_11			[];
+	static		uint8_t		sun_12			[];
+	static		uint8_t		cloud_00		[];
+	static		uint8_t		cloud_01		[];
+	static		uint8_t		cloud_02		[];
+	static		uint8_t		cloud_10		[];
+	static		uint8_t		cloud_11		[];
+	static		uint8_t		cloud_12		[];
+	static		uint8_t		rain_00			[];
+	static		uint8_t		rain_01			[];
+	static		uint8_t		rain_02			[];
+	static		uint8_t		rain_10			[];
+	static		uint8_t		rain_11			[];
+	static		uint8_t		rain_12			[];
+
 
 };
 

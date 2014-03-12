@@ -2,7 +2,6 @@
 // Microsoft Visual C++ generated include file.
 // Used by weather_station.rc
 
-// Valeurs par défaut suivantes des nouveaux objets
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
