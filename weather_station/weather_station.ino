@@ -1,4 +1,11 @@
 
+#include <util.h>
+#include <EthernetUdp.h>
+#include <EthernetServer.h>
+#include <EthernetClient.h>
+#include <Ethernet.h>
+#include <Dns.h>
+#include <Dhcp.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BMP085_U.h>
 #include <dht11.h>
@@ -15,6 +22,8 @@
 #include "ArduinoTendencyStrategy.h"
 #include "WeatherInference.h"
 #include "APronosticStrategy.h"
+#include "NTPClient.h"
+#include "NTPClock.h"
 int dallasPin = 2;
 int dht11Pin = 9;
 
@@ -27,6 +36,14 @@ OneWire oneWire(dallasPin);
 DallasTemperature sensors(&oneWire);
 DeviceAddress outsideThermometer = { 0x28, 0xFD, 0xCC, 0x74, 0x05, 0x00, 0x00, 0xB6 };
 
+EthernetUDP udp;
+const char * ntpIP = "129.6.15.28";
+byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
+IPAddress ip(192, 168, 1, 177);
+IPAddress gatewayIP(192, 168, 1, 254);
+IPAddress dnsIP(192, 168, 1, 254);
+NTPClient * ntp;
+NTPClock * clock;
 LCDWeatherDisplay				*	display					= NULL;
 WeatherInference<double>		*	inference				= NULL;
 ArduinoTendencyStrategy<double> *	tendencyStrategy		= NULL;
@@ -122,15 +139,22 @@ void setup()
 	sensors.begin();
 
 	// set the resolution to 10 bit (good enough?)
-	sensors.setResolution(outsideThermometer, 12);
+	sensors.setResolution(outsideThermometer, 10);
 
 	pronosticStrategy = new ArduinoPronosticStrategy<double>();
-	tendencyStrategy = new ArduinoTendencyStrategy<double>(8, 30, 30, 30, 30);
+	tendencyStrategy = new ArduinoTendencyStrategy<double>(1, 30, 30, 30, 30);
 	
 	inference = new WeatherInference<double>(tendencyStrategy, pronosticStrategy);
 	
 	display = new LCDWeatherDisplay(inference);
 	
+	Ethernet.begin(mac, ip, dnsIP, gatewayIP);
+
+	ntp = new NTPClient(&udp, ntpIP);
+
+	clock = new NTPClock(ntp);
+	clock->synchronize();
+
 }
 
 void handleDisplay(){
@@ -165,6 +189,12 @@ void loop()
 
 	Serial.print("freeMemory()=");
 	Serial.println(freeMemory());
+
+	Serial.print(clock->getHours());
+	Serial.print(":");
+	Serial.print(clock->getMinutes());
+	Serial.print(":");
+	Serial.print(clock->getSeconds());
 
 	delay(1000);
 }
