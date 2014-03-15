@@ -10,9 +10,9 @@ public:
 	AClock(){}
 	virtual ~AClock()	{}
 
-	virtual		unsigned int	getHours(){};
-	virtual		unsigned int	getMinutes(){};
-	virtual		unsigned int	getSeconds(){};
+	virtual		unsigned int	getHours	()	=	0;
+	virtual		unsigned int	getMinutes	()	=	0;
+	virtual		unsigned int	getSeconds	()	=	0;
 
 };
 #endif 

@@ -21,7 +21,7 @@ public:
 	/**
 	* Computes the pronostic
 	*/
-	virtual		Pronostic	getPronostic	()	{}
+	virtual		Pronostic	getPronostic()	=	0;
 
 
 };

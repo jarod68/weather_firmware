@@ -18,8 +18,8 @@ public:
 	
 	virtual		~AWeatherDisplay()	{}
 	
-	virtual		void	display()	{};
-	virtual		void	clear()		{};
+	virtual		void	display()	= 0;
+	virtual		void	clear()		= 0;
 	
 	virtual		double	getIndoorTemperature	();
 	virtual		double	getIndoorHumidity		();

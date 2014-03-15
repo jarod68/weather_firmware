@@ -22,22 +22,22 @@ public:
 	/**
 	* Gets the indoor temperature tendency
 	*/
-	virtual		Tendency	getIndoorTemperatureTendency	(){};
+	virtual		Tendency	getIndoorTemperatureTendency	() = 0;
 
 	/**
 	* Gets the indoor humidity tendency
 	*/
-	virtual		Tendency	getIndoorHumidityTendency		(){};
+	virtual		Tendency	getIndoorHumidityTendency		() = 0;
 
 	/**
 	* Gets the indoor pressure tendency
 	*/
-	virtual		Tendency	getIndoorPressureTendency		(){};
+	virtual		Tendency	getIndoorPressureTendency		() = 0;
 
 	/**
 	* Gets the outdoor temperature tendency
 	*/
-	virtual		Tendency	getOutdoorTemperatureTendency	(){};
+	virtual		Tendency	getOutdoorTemperatureTendency	() = 0;
 
 
 };
