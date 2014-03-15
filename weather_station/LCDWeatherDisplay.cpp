@@ -75,7 +75,7 @@ void	LCDWeatherDisplay	::	display	()
 	lcd->print("temp = " + doubleToString(getIndoorTemperature())+' ');
 	displayDegres(); 
 	lcd->print('c');
-	//lcd->setCursor(19, 0);
+	lcd->setCursor(19, 0);
 
 	if (_inference->getIndoorTemperatureTendency() == Rising)
 		displayUpArrow();
@@ -86,7 +86,7 @@ void	LCDWeatherDisplay	::	display	()
 	 
 	lcd->setCursor(4, 1);
 	lcd->print("hum  = " + doubleToString(getIndoorHumidity()) + " %");
-	//lcd->setCursor(19, 1);
+	lcd->setCursor(19, 1);
 	if (_inference->getIndoorHumidityTendency() == Rising)
 		displayUpArrow();
 	else

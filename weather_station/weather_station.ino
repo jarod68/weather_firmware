@@ -32,6 +32,9 @@
 #include "APronosticStrategy.h"
 #include "NTPClient.h"
 #include "NTPClock.h"
+
+#define TEN_MINUTES_MILLIS 600000
+
 int dallasPin = 2;
 int dht11Pin = 9;
 
@@ -149,7 +152,7 @@ void setup()
 	sensors.setResolution(outsideThermometer, 10);
 
 	pronosticStrategy = new ArduinoPronosticStrategy<double>();
-	tendencyStrategy = new ArduinoTendencyStrategy<double>(1, 30, 30, 30, 30);
+	tendencyStrategy = new ArduinoTendencyStrategy<double>(3, TEN_MINUTES_MILLIS, TEN_MINUTES_MILLIS, TEN_MINUTES_MILLIS, TEN_MINUTES_MILLIS);
 	
 	inference = new WeatherInference<double>(tendencyStrategy, pronosticStrategy);
 	
