@@ -1,5 +1,5 @@
 #include "NTPClient.h"
-
+#include "Arduino.h"
 
 // NTP time stamp is in the first 48 bytes of the message
 
