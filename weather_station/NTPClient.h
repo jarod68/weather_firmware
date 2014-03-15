@@ -14,6 +14,7 @@ public:
 	NTPClient	(const char * ntpIP);
 	virtual		~NTPClient();
 
+	// Requests time by sending a request to the NTP server
 	virtual		unsigned long	requestTime	();
 protected:
 	void sendNTPpacket();
