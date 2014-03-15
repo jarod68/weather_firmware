@@ -1,3 +1,11 @@
+/* ---------------------------------------------------------------------------
+** This software is in the public domain, furnished "as is", without technical
+** support, and with no warranty, express or implied, as to its usefulness for
+** any purpose.
+**
+** Author: Matthieu Holtz
+** Year: 2014
+** -------------------------------------------------------------------------*/
 
 #include <util.h>
 #include <EthernetUdp.h>
@@ -36,7 +44,6 @@ OneWire oneWire(dallasPin);
 DallasTemperature sensors(&oneWire);
 DeviceAddress outsideThermometer = { 0x28, 0xFD, 0xCC, 0x74, 0x05, 0x00, 0x00, 0xB6 };
 
-EthernetUDP udp;
 const char * ntpIP = "129.6.15.28";
 byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 IPAddress ip(192, 168, 1, 177);
@@ -150,7 +157,7 @@ void setup()
 	
 	Ethernet.begin(mac, ip, dnsIP, gatewayIP);
 
-	ntp = new NTPClient(&udp, ntpIP);
+	ntp = new NTPClient(ntpIP);
 
 	clock = new NTPClock(ntp);
 	clock->synchronize();
