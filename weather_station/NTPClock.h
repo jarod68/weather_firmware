@@ -9,20 +9,20 @@
 class NTPClock : public AClock
 {
 public:
-	NTPClock(NTPClient * ntpClient);
-	virtual ~NTPClock();
+	NTPClock	(NTPClient * ntpClient);
+	virtual		~NTPClock();
 
-	virtual unsigned long getPosixTimestamp();
-	virtual void synchronize();
-	virtual		unsigned int	getHours();
-	virtual		unsigned int	getMinutes();
-	virtual		unsigned int	getSeconds();
+	virtual		unsigned long	getPosixTimestamp	();
+	virtual		void			synchronize			();
+	virtual		unsigned int	getHours			();
+	virtual		unsigned int	getMinutes			();
+	virtual		unsigned int	getSeconds			();
 
 protected :
-	virtual unsigned long systemTimeSec();
+	virtual		unsigned long	systemTimeSec		();
 
 private:
-	NTPClient * _ntpClient;
-	unsigned long _localTimeReference, _ntpTimeReference;
+	NTPClient	*	_ntpClient;
+	unsigned long	_localTimeReference, _ntpTimeReference;
 };
 #endif
