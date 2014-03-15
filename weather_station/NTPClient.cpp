@@ -5,15 +5,20 @@
 
 const  unsigned int  NTPClient::BUFFERSIZE = 48;
 
- NTPClient	::	NTPClient	(EthernetUDP * udp, const char * ntpIP) :
-																	_udp(udp), _ntpIP(ntpIP), 
+ NTPClient	::	NTPClient	(const char * ntpIP) :
+																	_udp(new EthernetUDP()), _ntpIP(ntpIP), 
 																	_packetBuffer(NULL), 
 																	_localPort(2390)
 	
 {}
 
 NTPClient	::	~NTPClient	()
-{}
+{
+	if (_packetBuffer != NULL) 
+		delete[] _packetBuffer;
+
+	delete _udp;
+}
 
 unsigned long	NTPClient	::	requestTime	()
 {
