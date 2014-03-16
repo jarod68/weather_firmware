@@ -162,9 +162,8 @@ void setup()
 
 	ntp = new NTPClient(ntpIP);
 
-	clock = new NTPClock(ntp);
+	clock = new NTPClock(ntp, 1);
 	clock->synchronize();
-
 }
 
 void handleDisplay(){

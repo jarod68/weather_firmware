@@ -9,10 +9,19 @@
 #include "NTPClock.h"
 #include <Arduino.h>
 
-NTPClock	::	NTPClock	(NTPClient * ntpClient) :
-													_ntpClient(ntpClient),
-													_localTimeReference(0),
-													_ntpTimeReference(0)
+NTPClock::NTPClock(NTPClient * ntpClient) :_ntpClient(ntpClient),
+										_localTimeReference(0),
+										_ntpTimeReference(0),
+										_timezoneOffset(0)
+{
+	this->synchronize();
+}
+
+NTPClock	::	NTPClock	(NTPClient * ntpClient, unsigned int timezoneOffset) :
+																				_ntpClient(ntpClient),
+																				_localTimeReference(0),
+																				_ntpTimeReference(0),
+																				_timezoneOffset(timezoneOffset)
 {
 	this->synchronize();
 }
@@ -39,7 +48,7 @@ unsigned long	NTPClock	::	systemTimeSec	()
 
 unsigned int	NTPClock	::	getHours		()
 {
-	return (getPosixTimestamp() % 86400L) / 3600; 
+	return getHours_UTC() + _timezoneOffset;
 }
 
 unsigned int	NTPClock	::	getMinutes		()
@@ -50,4 +59,19 @@ unsigned int	NTPClock	::	getMinutes		()
 unsigned int	NTPClock	::	getSeconds		()
 {
 	return (getPosixTimestamp() % 60);
+}
+
+unsigned int	NTPClock	::	getHours_UTC()
+{
+	return (getPosixTimestamp() % 86400L) / 3600;
+}
+
+void			NTPClock	::	setTimezoneOffset(unsigned int offset)
+{
+	_timezoneOffset = offset;
+}
+
+unsigned int	NTPClock	::	getTimezoneOffset()
+{
+	return _timezoneOffset;
 }

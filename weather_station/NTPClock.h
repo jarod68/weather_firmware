@@ -21,6 +21,11 @@ class NTPClock : public AClock
 public:
 	// Constructor using NTPClient pointer as parameter. The NTPCLient is needed to provide NTP time synchronization with local Arduino time
 	NTPClock	(NTPClient * ntpClient);
+
+	// Constructor using NTPClient pointer as parameter. The NTPCLient is needed to provide NTP time synchronization with local Arduino time. 
+	// The timezoneOffset parameter is used to specify timezone.
+	NTPClock(NTPClient * ntpClient, unsigned int timezoneOffset);
+
 	virtual		~NTPClock();
 
 	// Returns the Posix timestamp value. AKA number of milliseconds since 1 jan. 1970.
@@ -29,14 +34,17 @@ public:
 	// Synchronizes the clock with the ntp server used by this instance
 	virtual		void			synchronize			();
 
-	// Gets the current hours value
 	virtual		unsigned int	getHours			();
 
-	// Gets the current minutes value
 	virtual		unsigned int	getMinutes			();
 
-	// Gets the current seconds value
 	virtual		unsigned int	getSeconds			();
+
+	virtual		unsigned int	getHours_UTC		();
+
+	virtual		void			setTimezoneOffset	(unsigned int offset);
+
+	virtual		unsigned int	getTimezoneOffset	();
 
 protected :
 	virtual		unsigned long	systemTimeSec		();
@@ -44,5 +52,6 @@ protected :
 private:
 	NTPClient	*	_ntpClient;
 	unsigned long	_localTimeReference, _ntpTimeReference;
+	unsigned int	_timezoneOffset;
 };
 #endif
