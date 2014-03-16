@@ -60,4 +60,5 @@ void handleError();
 #include "C:\Users\matt\Source\Repos\arduino\weather_station\SlidingHistory.h"
 #include "C:\Users\matt\Source\Repos\arduino\weather_station\Tendency.h"
 #include "C:\Users\matt\Source\Repos\arduino\weather_station\WeatherInference.h"
+#include "C:\Users\matt\Source\Repos\arduino\weather_station\resource.h"
 #endif
