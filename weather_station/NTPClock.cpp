@@ -9,10 +9,13 @@
 #include "NTPClock.h"
 #include <Arduino.h>
 
+#define TWENTYFOURHRMILLIS 86400000
+
 NTPClock::NTPClock(NTPClient * ntpClient) :_ntpClient(ntpClient),
 										_localTimeReference(0),
 										_ntpTimeReference(0),
-										_timezoneOffset(0)
+										_timezoneOffset(0),
+										_synchronizationTimestamp(0)
 {
 	this->synchronize();
 }
@@ -21,7 +24,8 @@ NTPClock	::	NTPClock	(NTPClient * ntpClient, unsigned int timezoneOffset) :
 																				_ntpClient(ntpClient),
 																				_localTimeReference(0),
 																				_ntpTimeReference(0),
-																				_timezoneOffset(timezoneOffset)
+																				_timezoneOffset(timezoneOffset),
+																				_synchronizationTimestamp(0)
 {
 	this->synchronize();
 }
@@ -32,13 +36,20 @@ NTPClock	::	~NTPClock	()
 
 unsigned long  NTPClock		::	getPosixTimestamp	()
 {
-	return _ntpTimeReference + systemTimeSec() - _localTimeReference;
+
+	unsigned long timestamp = _ntpTimeReference + systemTimeSec() - _localTimeReference;
+
+	if (_synchronizationTimestamp + TWENTYFOURHRMILLIS <= timestamp || _synchronizationTimestamp <= 0)
+		synchronize();
+	
+	return timestamp;
 }
 
 void			NTPClock	::	synchronize		()
 {
 	_ntpTimeReference = _ntpClient->requestTime();
 	_localTimeReference = systemTimeSec();
+	_synchronizationTimestamp = _ntpTimeReference - _localTimeReference;;
 }
 
 unsigned long	NTPClock	::	systemTimeSec	()

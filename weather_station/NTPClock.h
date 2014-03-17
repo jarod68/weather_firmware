@@ -51,6 +51,7 @@ protected :
 
 private:
 	NTPClient	*	_ntpClient;
+	unsigned long	_synchronizationTimestamp;
 	unsigned long	_localTimeReference, _ntpTimeReference;
 	unsigned int	_timezoneOffset;
 };
