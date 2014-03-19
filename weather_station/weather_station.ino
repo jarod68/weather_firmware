@@ -7,13 +7,9 @@
 ** Year: 2014
 ** -------------------------------------------------------------------------*/
 
-#include <util.h>
+//#include <SD.h>
 #include <EthernetUdp.h>
-#include <EthernetServer.h>
-#include <EthernetClient.h>
 #include <Ethernet.h>
-#include <Dns.h>
-#include <Dhcp.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BMP085_U.h>
 #include <dht11.h>
@@ -23,6 +19,7 @@
 #include <SPI.h>
 #include <OneWire.h>
 #include <MemoryFree.h>
+//#include <SD.h>
 
 #include "LCDWeatherDisplay.h"
 #include "SlidingHistory.h"
@@ -30,13 +27,15 @@
 #include "ArduinoTendencyStrategy.h"
 #include "WeatherInference.h"
 #include "APronosticStrategy.h"
-#include "NTPClient.h"
-#include "NTPClock.h"
+//#include "NTPClient.h"
+//#include "NTPClock.h"
+#include "JsonExportStrategy.h"
 
 #define TEN_MINUTES_MILLIS 600000
 
-int dallasPin = 2;
-int dht11Pin = 9;
+const int dallasPin = 2;
+const int dht11Pin = 9;
+const int SDchipSelect = 4;
 
 dht11 DHT11;
 
@@ -47,25 +46,25 @@ OneWire oneWire(dallasPin);
 DallasTemperature sensors(&oneWire);
 DeviceAddress outsideThermometer = { 0x28, 0xFD, 0xCC, 0x74, 0x05, 0x00, 0x00, 0xB6 };
 
-const char * ntpIP = "129.6.15.28";
+//const char * ntpIP = "129.6.15.28";
 byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 IPAddress ip(192, 168, 1, 177);
 IPAddress gatewayIP(192, 168, 1, 254);
 IPAddress dnsIP(192, 168, 1, 254);
-NTPClient * ntp;
-NTPClock * clock;
+//NTPClient * ntp;
+//NTPClock * clock;
 LCDWeatherDisplay				*	display					= NULL;
 WeatherInference<double>		*	inference				= NULL;
 ArduinoTendencyStrategy<double> *	tendencyStrategy		= NULL;
 APronosticStrategy<double>		*	pronosticStrategy		= NULL;
-
+JsonExportStrategy<double>		*	exportStrategy			= NULL;
 boolean isError = false;
 
 double insideTemperature = -1;
 double outsideTemperature = -1;
 double insideHumidity = -1;
 double insidePressure = -1;
-
+/*
 void discoverOneWireDevices(void) {
 	byte i;
 	byte present = 0;
@@ -94,7 +93,7 @@ void discoverOneWireDevices(void) {
 	oneWire.reset_search();
 	return;
 }
-
+*/
 
 void captureBMP180(){
 
@@ -122,11 +121,11 @@ void captureDHT11Temperature(){
 	switch (chk)
 	{
 	case -1:
-		Serial.println("DHT11 Checksum error");
+		
 		isError = true;
 		break;
 	case -2:
-		Serial.println("DHT11 Time out error");
+		
 		isError = true;
 		break;
 
@@ -145,7 +144,7 @@ void setup()
 	
 	Serial.begin(9600);
 	delay(2000);
-	discoverOneWireDevices();
+	//discoverOneWireDevices();
 	sensors.begin();
 
 	// set the resolution to 10 bit (good enough?)
@@ -153,16 +152,17 @@ void setup()
 
 	pronosticStrategy = new ArduinoPronosticStrategy<double>();
 	tendencyStrategy = new ArduinoTendencyStrategy<double>(3, TEN_MINUTES_MILLIS, TEN_MINUTES_MILLIS, TEN_MINUTES_MILLIS, TEN_MINUTES_MILLIS);
-	
-	inference = new WeatherInference<double>(tendencyStrategy, pronosticStrategy);
+	exportStrategy = new JsonExportStrategy<double>();
+	inference = new WeatherInference<double>(tendencyStrategy, pronosticStrategy, exportStrategy);
 	
 	display = new LCDWeatherDisplay(inference);
 	
-	Ethernet.begin(mac, ip, dnsIP, gatewayIP);
+	//Ethernet.begin(mac, ip, dnsIP, gatewayIP);
 
-	ntp = new NTPClient(ntpIP);
+	//ntp = new NTPClient(ntpIP);
 
-	clock = new NTPClock(ntp, 1);
+	//clock = new NTPClock(ntp, 1);
+
 }
 
 void handleDisplay(){
@@ -187,22 +187,25 @@ void handleDisplay(){
 
 void handleError(){
 
-	if (isError)
-		Serial.print("Error");
+	//if (isError)
+	//	Serial.print("Error");
 	isError = false;
 }
 void loop()
 {
 	handleDisplay();
-
+	
 	Serial.print("freeMemory()=");
 	Serial.println(freeMemory());
-
+	/*
 	Serial.print(clock->getHours());
 	Serial.print(":");
 	Serial.print(clock->getMinutes());
 	Serial.print(":");
 	Serial.print(clock->getSeconds());
+	*/
+
+	Serial.print(exportStrategy->jsonize());
 
 	delay(1000);
 }
