@@ -17,7 +17,7 @@
 #include "Tendency.h"
 #include "SlidingHistory.h"
 #include "ATendencyStrategy.h"
-#include "APronosticStrategy.h"
+#include "APronosticStrategy.h" 
 
 /**
 * Abstract class to infer weather values (indoor temperature, indoor humidity, indoor pressures, outdoor temperature).
@@ -33,10 +33,11 @@ public:
 	* Constructor using history size argument, and delays
 	*/
 	WeatherInference	(ATendencyStrategy<T>	* tendencyStrategy, 
-						 APronosticStrategy<T>	* pronosticStrategy) :
+						 APronosticStrategy<T>	* pronosticStrategy,
+						 AWeatherStrategy<T>	* exportStrategy) :
 						_tendencyStrategy	(tendencyStrategy),
-						_pronosticStrategy	(pronosticStrategy)
-			
+						_pronosticStrategy	(pronosticStrategy),
+						_exportStrategy		(exportStrategy)
 	{}
 
 	virtual		~WeatherInference	()
@@ -49,6 +50,7 @@ public:
 		
 			_tendencyStrategy->appendIndoorTemperature(indoorTemperature);
 			_pronosticStrategy->appendIndoorTemperature(indoorTemperature);
+			_exportStrategy->appendIndoorTemperature(indoorTemperature);
 	}
 
 	/**
@@ -58,6 +60,7 @@ public:
 		
 			_tendencyStrategy->appendIndoorHumidity(indoorHumidity);
 			_pronosticStrategy->appendIndoorHumidity(indoorHumidity);
+			_exportStrategy->appendIndoorHumidity(indoorHumidity);
 	}
 
 	/**
@@ -67,6 +70,7 @@ public:
 		
 			_tendencyStrategy->appendIndoorPressure(indoorPressure);
 			_pronosticStrategy->appendIndoorPressure(indoorPressure);
+			_exportStrategy->appendIndoorPressure(indoorPressure);
 	}
 
 	/**
@@ -76,6 +80,7 @@ public:
 		
 			_tendencyStrategy->appendOutdoorTemperature(outdoorTemperature);
 			_pronosticStrategy->appendOutdoorTemperature(outdoorTemperature);
+			_exportStrategy->appendOutdoorTemperature(outdoorTemperature);
 	}
 
 	/**
@@ -118,6 +123,7 @@ public:
 	private:
 		ATendencyStrategy<T>	*	_tendencyStrategy;
 		APronosticStrategy<T>	*	_pronosticStrategy;
+		AWeatherStrategy<T>		*	_exportStrategy;
 };
 
 #endif
