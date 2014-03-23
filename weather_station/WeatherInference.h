@@ -11,8 +11,6 @@
 #ifndef WEATHERINFERENCE_H
 #define WEATHERINFERENCE_H
 
-//#include <Arduino.h>
-
 #include "Pronostic.h"
 #include "Tendency.h"
 #include "SlidingHistory.h"
