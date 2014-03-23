@@ -102,15 +102,15 @@ public:
 			else
 				return Cloud;
 			 
-		}//Without history :
-		else{
-
-			if (_indoorPressuresMean_curr > _indoorPressuresMean_prev)
-				return Sun;
-			else
-				return Cloud;
 		}
-
+        //Without history :
+		
+        if (_indoorPressuresMean_curr > _indoorPressuresMean_prev)
+            return Sun;
+        
+        //else
+        return Cloud;
+		
 
 	}
 
