@@ -25,7 +25,7 @@ public :
     /**
      * Constructor using port number parameter, and a WebserverDeliveryContentStrategy to handle the content delivery.
      */
-    Webserver   (unsigned int port, WebserverDeliveryContentStrategy * deliveryStrategy);
+    Webserver   (const unsigned int port, WebserverDeliveryContentStrategy * deliveryStrategy);
     
     virtual     ~Webserver();
     
