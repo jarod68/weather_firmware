@@ -7,7 +7,10 @@
 ** Year: 2014
 ** -------------------------------------------------------------------------*/
 
-#include <EthernetUdp.h>
+#define TEN_MINUTES_MILLIS 600000
+//#define DISCOVER_ONE_WIRE_DEVICES
+
+
 #include <Ethernet.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BMP085_U.h>
@@ -17,8 +20,9 @@
 #include <LiquidCrystal_I2C.h>
 #include <SPI.h>
 #include <OneWire.h>
-#include <MemoryFree.h>
+//#include <MemoryFree.h>
 //#include <SD.h>
+//#include <EthernetUdp.h>
 
 #include "LCDWeatherDisplay.h"
 #include "SlidingHistory.h"
@@ -26,18 +30,17 @@
 #include "ArduinoTendencyStrategy.h"
 #include "WeatherInference.h"
 #include "APronosticStrategy.h"
-//#include "NTPClient.h"
-//#include "NTPClock.h"
 #include "JsonExportStrategy.h"
+#include "Webserver.h"
 
-#define TEN_MINUTES_MILLIS 600000
+const int dallasPin     = 2;
+const int dht11Pin      = 9;
+const int SDchipSelect  = 4;
 
-const int dallasPin = 2;
-const int dht11Pin = 9;
-const int SDchipSelect = 4;
-
+// DHT11 temperature sensor setup
 dht11 DHT11;
 
+// BMP085 pressure sensor setup
 Adafruit_BMP085_Unified bmp = Adafruit_BMP085_Unified(119);
 
 // Setup a oneWire instance to communicate with any OneWire devices
@@ -45,13 +48,12 @@ OneWire oneWire(dallasPin);
 DallasTemperature sensors(&oneWire);
 DeviceAddress outsideThermometer = { 0x28, 0xFD, 0xCC, 0x74, 0x05, 0x00, 0x00, 0xB6 };
 
-//const char * ntpIP = "129.6.15.28";
 byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
-IPAddress ip(192, 168, 1, 177);
-IPAddress gatewayIP(192, 168, 1, 254);
-IPAddress dnsIP(192, 168, 1, 254);
-//NTPClient * ntp;
-//NTPClock * clock;
+IPAddress ip(192, 168, 0, 177);
+//IPAddress gatewayIP(192, 168, 0, 1);
+//IPAddress dnsIP(192, 168, 1, 254);
+
+Webserver                       *   server                  = NULL;
 LCDWeatherDisplay				*	display					= NULL;
 WeatherInference<double>		*	inference				= NULL;
 ArduinoTendencyStrategy<double> *	tendencyStrategy		= NULL;
@@ -63,7 +65,8 @@ double insideTemperature = -1;
 double outsideTemperature = -1;
 double insideHumidity = -1;
 double insidePressure = -1;
-/*
+
+#ifdef DISCOVER_ONE_WIRE_DEVICES
 void discoverOneWireDevices(void) {
 	byte i;
 	byte present = 0;
@@ -92,18 +95,16 @@ void discoverOneWireDevices(void) {
 	oneWire.reset_search();
 	return;
 }
-*/
+#endif
 
 void captureBMP180(){
 
 	sensors_event_t event;
 	bmp.getEvent(&event);
 
-	/* Display the results (barometric pressure is measure in hPa) */
-	if (event.pressure)
-	{
+    if (event.pressure)
 		insidePressure = event.pressure;
-	}
+	
 }
 
 void captureDallasTemperature(){
@@ -116,19 +117,6 @@ void captureDallasTemperature(){
 void captureDHT11Temperature(){
 
 	int chk = DHT11.read(dht11Pin);
-
-	switch (chk)
-	{
-	case -1:
-		
-		isError = true;
-		break;
-	case -2:
-		
-		isError = true;
-		break;
-
-	}
 
 	insideHumidity = DHT11.humidity;
 	insideTemperature = DHT11.temperature;
@@ -143,25 +131,30 @@ void setup()
 	
 	Serial.begin(9600);
 	delay(2000);
-	//discoverOneWireDevices();
+    
+    #ifdef DISCOVER_ONE_WIRE_DEVICES
+	discoverOneWireDevices();
+    #endif
+    
 	sensors.begin();
 
 	// set the resolution to 10 bit (good enough?)
 	sensors.setResolution(outsideThermometer, 10);
 
 	pronosticStrategy = new ArduinoPronosticStrategy<double>();
+    
 	tendencyStrategy = new ArduinoTendencyStrategy<double>(3, TEN_MINUTES_MILLIS, TEN_MINUTES_MILLIS, TEN_MINUTES_MILLIS, TEN_MINUTES_MILLIS);
+    
 	exportStrategy = new JsonExportStrategy<double>();
+    
 	inference = new WeatherInference<double>(tendencyStrategy, pronosticStrategy, exportStrategy);
 	
 	display = new LCDWeatherDisplay(inference);
 	
-	//Ethernet.begin(mac, ip, dnsIP, gatewayIP);
+	Ethernet.begin(mac, ip);
 
-	//ntp = new NTPClient(ntpIP);
-
-	//clock = new NTPClock(ntp, 1);
-
+    server = new Webserver(80, exportStrategy);
+    
 }
 
 void handleDisplay(){
@@ -184,27 +177,14 @@ void handleDisplay(){
 	delay(100);
 }
 
-void handleError(){
-
-	//if (isError)
-	//	Serial.print("Error");
-	isError = false;
-}
 void loop()
 {
 	handleDisplay();
 	
-	Serial.print("freeMemory()=");
-	Serial.println(freeMemory());
-	/*
-	Serial.print(clock->getHours());
-	Serial.print(":");
-	Serial.print(clock->getMinutes());
-	Serial.print(":");
-	Serial.print(clock->getSeconds());
-	*/
-
-	Serial.print(exportStrategy->jsonize());
-
-	delay(1000);
+	//Serial.print("freeMemory()=");
+	//Serial.println(freeMemory());
+    server->handle();
+	
+    //Speed down execution
+	delay(100);
 }
