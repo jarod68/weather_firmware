@@ -221,7 +221,7 @@ void	LCDWeatherDisplay	::	clear	()
 }
 String	LCDWeatherDisplay	::	doubleToString	(const double _double)
 {
-	char buffer[24];
+	char buffer[12];
 	dtostrf(_double, 0, 1 ,buffer);
 	return String(buffer);
 }
