@@ -7,12 +7,11 @@
 ** Year: 2014
 ** -------------------------------------------------------------------------*/
 
-//#include <SD.h>
 #include <EthernetUdp.h>
 #include <Ethernet.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BMP085_U.h>
-#include <dht11.h>
+#include "dht11.h"
 #include <DallasTemperature.h>
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
