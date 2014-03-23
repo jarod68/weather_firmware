@@ -12,17 +12,20 @@
 
 #include "AJSon.h"
 #include "AWeatherStrategy.h"
+#include "WebserverDeliveryContentStrategy.h"
+#include <SPI.h>
 
 /**
-*
+* This class is an implementation of AWeatherStrategy, AJSon, and WebserverDeliveryContentStrategy.
+* It intends to compute a JSon output of weather sensors, and serve them to an EthernetClient
 */
 template<typename T>
-class JsonExportStrategy : public AWeatherStrategy<T>, public AJSon
+class JsonExportStrategy : public AWeatherStrategy<T>, public AJSon, public WebserverDeliveryContentStrategy
 {
 
 public:
 
-	JsonExportStrategy() : AJSon(), AWeatherStrategy<T>()
+	JsonExportStrategy() : AJSon(), AWeatherStrategy<T>(), WebserverDeliveryContentStrategy()
 	{}
 
 	virtual ~JsonExportStrategy()	{}
@@ -42,18 +45,26 @@ public:
 		char indoorPressure[8];
 		dtostrf(_indoorPressure, 2, 1, indoorPressure);
 
-		String	str = String("{ \"indoorTemp\" : \"");
+		String	str = String("{\"iT\":\"");
 				str.concat(indoorTemperature);
-				str.concat("\" , \"outdoorTemp\" : \"");
+				str.concat("\",\"oT\":\"");
 				str.concat(outdoorTemperature);
-				str.concat("\" , \"indoorHumidity\" : \"");
+				str.concat("\",\"iH\":\"");
 				str.concat(indoorHumidity);
-				str.concat("\" , \"indoorPressure\" : \"");
+				str.concat("\",\"iP\":\"");
 				str.concat(indoorPressure);
-				str.concat("\" }");
+				str.concat("\"}");
 		
 		return str;
 	}
+    
+    virtual void deliverTo(EthernetClient * client){
+        
+            client->println("HTTP/1.1 200 OK\nContent-Type: text\nConnection: close\nRefresh: 5\n");
+
+            client->println(this->jsonize());
+         
+    }
 
 	virtual		void		appendIndoorTemperature(T indoorTemperature)
 	{
