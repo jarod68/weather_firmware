@@ -28,22 +28,22 @@ public:
 	/**
 	* Appends to indoor humidity with the specified value, and recompute tendency
 	*/
-	virtual		void		appendIndoorTemperature		(T indoorTemperature)	= 0;
+	virtual		void		appendIndoorTemperature		(const T indoorTemperature)     = 0;
 
 	/**
 	* Appends to indoor humidity with the specified value, and recompute tendency
 	*/
-	virtual		void		appendIndoorHumidity		(T _indoorHumidity)		= 0;
+	virtual		void		appendIndoorHumidity		(const T _indoorHumidity)		= 0;
 
 	/**
 	* Appends to indoor pressure with the specified value, and recompute tendency
 	*/
-	virtual		void		appendIndoorPressure		(T _indoorPressure)		= 0;
+	virtual		void		appendIndoorPressure		(const T _indoorPressure)		= 0;
 
 	/**
 	* Appends to outdoor temperature with the specified value, and recompute tendency
 	*/
-	virtual		void		appendOutdoorTemperature	(T _outdoorTemperature)	= 0;
+	virtual		void		appendOutdoorTemperature	(const T _outdoorTemperature)	= 0;
 
 	
 };

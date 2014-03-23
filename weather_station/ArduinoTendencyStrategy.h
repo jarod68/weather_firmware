@@ -24,11 +24,11 @@ class ArduinoTendencyStrategy : public ATendencyStrategy<T>
 {
 
 public:
-	ArduinoTendencyStrategy	(size_t historySize,
-							unsigned long indoorTemperatures_delay,
-							unsigned long indoorHumidities_delay,
-							unsigned long indoorPressures_delay,
-							unsigned long outdoorTemperatures_delay) :
+	ArduinoTendencyStrategy	(const size_t historySize,
+							const unsigned long indoorTemperatures_delay,
+							const unsigned long indoorHumidities_delay,
+							const unsigned long indoorPressures_delay,
+							const unsigned long outdoorTemperatures_delay) :
 							ATendencyStrategy<T>			(),
 							_indoorTemperatures				(new SlidingHistory<T>(historySize)),
 							_indoorHumidities				(new SlidingHistory<T>(historySize)),
@@ -60,7 +60,7 @@ public:
 		delete	_outdoorTemperatures;
 	}
 
-	virtual		void		appendIndoorTemperature(T indoorTemperature)
+	virtual		void		appendIndoorTemperature(const T indoorTemperature)
 	{
 		unsigned long time = getTime();
 		
@@ -73,7 +73,7 @@ public:
 		}
 	}
 
-	virtual		void		appendIndoorHumidity(T _indoorHumidity)
+	virtual		void		appendIndoorHumidity(const T _indoorHumidity)
 	{
 		unsigned long time = getTime();
 
@@ -85,7 +85,7 @@ public:
 		}
 	}
 
-	virtual		void		appendIndoorPressure(T _indoorPressure)
+	virtual		void		appendIndoorPressure(const T _indoorPressure)
 	{
 		unsigned long time = getTime();
 
@@ -98,7 +98,7 @@ public:
 		}
 	}
 
-	virtual		void		appendOutdoorTemperature(T _outdoorTemperature)
+	virtual		void		appendOutdoorTemperature(const T _outdoorTemperature)
 	{
 		unsigned long time = getTime();
 
@@ -131,7 +131,7 @@ public:
 		return _outdoorTemperaturesMean_curr > _outdoorTemperaturesMean_prev ? Rising : Falling;
 	}
 
-	virtual unsigned	long	getTime(){
+	virtual unsigned	long	getTime() const{
 		return millis();
 	}
 
@@ -156,10 +156,10 @@ private :
 	unsigned	long		_indoorPressures_insertTime;
 	unsigned	long		_outdoorTemperatures_insertTime;
 
-	unsigned	long		_indoorTemperatures_delay;
-	unsigned	long		_indoorHumidities_delay;
-	unsigned	long		_indoorPressures_delay;
-	unsigned	long		_outdoorTemperatures_delay;
+	const unsigned	long		_indoorTemperatures_delay;
+	const unsigned	long		_indoorHumidities_delay;
+	const unsigned	long		_indoorPressures_delay;
+	const unsigned	long		_outdoorTemperatures_delay;
 };
 
 #endif

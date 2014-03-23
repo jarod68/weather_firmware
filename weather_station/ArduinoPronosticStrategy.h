@@ -52,12 +52,12 @@ public:
 		return;
 	}
 
-	virtual		void		appendIndoorTemperature	(T indoorTemperature)
+	virtual		void		appendIndoorTemperature	(const T indoorTemperature)
 	{
 		return;
 	}
 
-	virtual		void		appendIndoorHumidity	(T _indoorHumidity)
+	virtual		void		appendIndoorHumidity	(const T _indoorHumidity)
 	{
 		unsigned long time = getTime();
 
@@ -68,7 +68,7 @@ public:
 		}
 	}
 
-	virtual		void		appendIndoorPressure	(T _indoorPressure)
+	virtual		void		appendIndoorPressure	(const T _indoorPressure)
 	{
 		unsigned long time = getTime();
 
@@ -80,7 +80,7 @@ public:
 		}
 	}
 
-	virtual		void		appendOutdoorTemperature	(T _outdoorTemperature)
+	virtual		void		appendOutdoorTemperature	(const T _outdoorTemperature)
 	{
 		return;
 	}
@@ -114,7 +114,7 @@ public:
 
 	}
 
-	virtual		unsigned long		getTime		(){
+	virtual		unsigned long		getTime		() const {
 		return millis();
 	}
 

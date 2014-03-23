@@ -16,39 +16,39 @@ AWeatherDisplay		::	AWeatherDisplay		() :
 											outdoorTemperature	(-1)
 {}
 
-AWeatherDisplay		::	AWeatherDisplay		(double _indoorTemperature, 
-											 double _indoorHumidity, 
-											 double _indoorPressure, 
-											 double _outdoorTemperature) :
+AWeatherDisplay		::	AWeatherDisplay		(const double _indoorTemperature,
+											 const double _indoorHumidity,
+											 const double _indoorPressure,
+											 const double _outdoorTemperature) :
 											 indoorTemperature	(_indoorTemperature), 
 											 indoorHumidity		(_indoorHumidity), 
 											 indoorPressure		(_indoorPressure), 
 											 outdoorTemperature	(_outdoorTemperature)
 {}
 
-double	AWeatherDisplay		::		getIndoorTemperature	(){
+double	AWeatherDisplay		::		getIndoorTemperature	() const{
 	return indoorTemperature;
 }
-double	AWeatherDisplay		::		getIndoorHumidity		(){
+double	AWeatherDisplay		::		getIndoorHumidity		() const{
 	return indoorHumidity;
 }
-double	AWeatherDisplay		::		getIndoorPressure		(){
+double	AWeatherDisplay		::		getIndoorPressure		() const{
 	return indoorPressure;
 }
-double	AWeatherDisplay::getOutdoorTemperature(){
+double	AWeatherDisplay     ::      getOutdoorTemperature   () const{
 	return outdoorTemperature;
 }
 
-void	AWeatherDisplay		::		setIndoorTemperature		(double _indoorTemperature)	{
+void	AWeatherDisplay		::		setIndoorTemperature		(const double _indoorTemperature)	{
 	indoorTemperature = _indoorTemperature;
 }
-void	AWeatherDisplay		::		setIndoorHumidity			(double _indoorHumidity)	{
+void	AWeatherDisplay		::		setIndoorHumidity			(const double _indoorHumidity)	{
 	indoorHumidity = _indoorHumidity;
 }
-void	AWeatherDisplay		::		setIndoorPressure			(double _indoorPressure)	{
+void	AWeatherDisplay		::		setIndoorPressure			(const double _indoorPressure)	{
 	indoorPressure = _indoorPressure;
 }
-void	AWeatherDisplay		::		setOutdoorTemperature		(double _outdoorTemperature){
+void	AWeatherDisplay		::		setOutdoorTemperature		(const double _outdoorTemperature){
 	outdoorTemperature = _outdoorTemperature;
 }
 

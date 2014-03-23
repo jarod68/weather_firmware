@@ -66,25 +66,25 @@ public:
          
     }
 
-	virtual		void		appendIndoorTemperature(T indoorTemperature)
+	virtual		void		appendIndoorTemperature (const T indoorTemperature)
 	{
 		_indoorTemperature = indoorTemperature;
 	}
 
 
-	virtual		void		appendIndoorHumidity(T indoorHumidity)
+	virtual		void		appendIndoorHumidity    (const T indoorHumidity)
 	{
 		_indoorHumidity = indoorHumidity;
 	}
 
 
-	virtual		void		appendIndoorPressure(T indoorPressure)
+	virtual		void		appendIndoorPressure    (const T indoorPressure)
 	{
 		_indoorPressure = indoorPressure;
 	}
 
 
-	virtual		void		appendOutdoorTemperature(T outdoorTemperature)
+	virtual		void		appendOutdoorTemperature(const T outdoorTemperature)
 	{
 		_outdoorTemperature = outdoorTemperature;
 	}

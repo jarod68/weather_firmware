@@ -18,10 +18,10 @@ public:
 	AWeatherDisplay	();
 
 	AWeatherDisplay	(
-					double _indoorTemperature, 
-					double _indoorHumidity, 
-					double _indoorPressure, 
-					double _outdoorTemperature
+					const double _indoorTemperature,
+					const double _indoorHumidity,
+					const double _indoorPressure,
+					const double _outdoorTemperature
 					);
 	
 	virtual		~AWeatherDisplay()	{}
@@ -29,15 +29,15 @@ public:
 	virtual		void	display()	= 0;
 	virtual		void	clear()		= 0;
 	
-	virtual		double	getIndoorTemperature	();
-	virtual		double	getIndoorHumidity		();
-	virtual		double	getIndoorPressure		();
-	virtual		double	getOutdoorTemperature	();
+	virtual		double	getIndoorTemperature	() const;
+	virtual		double	getIndoorHumidity		() const;
+	virtual		double	getIndoorPressure		() const;
+	virtual		double	getOutdoorTemperature	() const;
 
-	virtual		void	setIndoorTemperature	(double _indoorTemperature);
-	virtual		void	setIndoorHumidity		(double _indoorHumidity);
-	virtual		void	setIndoorPressure		(double _indoorPressure);
-	virtual		void	setOutdoorTemperature	(double _outdoorTemperature);
+	virtual		void	setIndoorTemperature	(const double _indoorTemperature);
+	virtual		void	setIndoorHumidity		(const double _indoorHumidity);
+	virtual		void	setIndoorPressure		(const double _indoorPressure);
+	virtual		void	setOutdoorTemperature	(const double _outdoorTemperature);
 
 protected:
 	double	indoorTemperature;
