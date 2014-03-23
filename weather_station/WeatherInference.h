@@ -115,6 +115,9 @@ public:
 		return _tendencyStrategy->getOutdoorTemperatureTendency();
 	}
 
+    /**
+     * Gets the weather pronostic
+     */
 	virtual		Pronostic	getPronostic				(){
 		return _pronosticStrategy->getPronostic();
 	}
