@@ -13,7 +13,7 @@ class weather_db{
 
 		$this->host 	= 	$arg_list['host'];
 		$this->user 	= 	$arg_list['user'];
-		$this->password = 	$arg_list['password'];
+		$this->password = 	$arg_list['xxx'];
 		$this->dbname 	= 	$arg_list['dbname'];
 	}
 

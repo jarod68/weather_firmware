@@ -1,7 +1,7 @@
 <?php
 include_once "weather_db.php";
 
-$db = new weather_db(array('host' => 'localhost','user' => 'root','password' => 'raspberry','dbname' => 'weather'));
+$db = new weather_db(array('host' => 'localhost','user' => 'root','password' => 'xxx','dbname' => 'weather'));
 
 
 if (isset($_GET["from"]) && isset($_GET["to"]) ){

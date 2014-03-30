@@ -20,7 +20,7 @@ if ( isset($json) && $json != ""){
 
 	$db = new weather_db(array(	'host' 		=> 'localhost',
 		'user' 		=> 'root',
-		'password' 	=> 'raspberry',
+		'password' 	=> 'xxx',
 		'dbname' 	=> 'weather'));
 
 	$db->insertValues (array(	'indoor_temp' => $decoded[constant("IN_TEMP_ATTR")], 
