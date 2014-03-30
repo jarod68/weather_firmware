@@ -49,7 +49,7 @@ DallasTemperature sensors(&oneWire);
 DeviceAddress outsideThermometer = { 0x28, 0xFD, 0xCC, 0x74, 0x05, 0x00, 0x00, 0xB6 };
 
 byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
-IPAddress ip(192, 168, 0, 177);
+IPAddress ip(192, 168, 1, 177);
 //IPAddress gatewayIP(192, 168, 0, 1);
 //IPAddress dnsIP(192, 168, 1, 254);
 
