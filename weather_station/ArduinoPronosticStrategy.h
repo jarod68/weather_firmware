@@ -18,10 +18,10 @@
 #define ATM_PRESSURE 1013 //hPa
 
 // Humidity level in the air when it rains
-#define HUMIDITY_RAIN_RATE 60 //percent
+#define HUMIDITY_RAIN_RATE 57 //percent
 
-// Six hours in milliseconds
-#define SIX_HOURS_MILLIS 21600000 //ms
+// One hours in milliseconds
+#define ONE_HOUR_MILLIS 3600000 //ms
 
 // One minute in milliseconds
 #define ONE_MINUTE_MILLIS 60000 //ms
@@ -38,7 +38,7 @@ public:
 	ArduinoPronosticStrategy				()	:
 										APronosticStrategy<T>(),
 										_indoorHumidities_delay(ONE_MINUTE_MILLIS),
-										_indoorPressures_delay(SIX_HOURS_MILLIS),
+										_indoorPressures_delay(ONE_HOUR_MILLIS),
 										_indoorHumiditiesMean_prev(0),
 										_indoorPressuresMean_prev(0),
 										_indoorHumiditiesMean_curr(0),
@@ -61,7 +61,7 @@ public:
 	{
 		unsigned long time = getTime();
 
-		if (_indoorHumidities_insertTime <= 0 || time >= _indoorHumidities_insertTime + _indoorHumidities_delay){
+		if (_indoorHumidities_insertTime <= 0 || time >= (_indoorHumidities_insertTime + _indoorHumidities_delay)){
 			_indoorHumiditiesMean_prev = _indoorHumiditiesMean_curr;
 			_indoorHumiditiesMean_curr = _indoorHumidity;
 			_indoorHumidities_insertTime = time;
@@ -72,7 +72,7 @@ public:
 	{
 		unsigned long time = getTime();
 
-		if (_indoorPressures_insertTime <= 0 || time >= _indoorPressures_insertTime + _indoorPressures_delay){
+		if (_indoorPressures_insertTime <= 0 || time >= (_indoorPressures_insertTime + _indoorPressures_delay)){
 			
 			_indoorPressuresMean_prev = _indoorPressuresMean_curr;
 			_indoorPressuresMean_curr = _indoorPressure;
