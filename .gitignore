@@ -186,3 +186,10 @@ UpgradeLog*.htm
 
 # Microsoft Fakes
 FakesAssemblies/
+weather_station/Sketchbook/Libraries/.DS_Store
+
+*.md
+
+README.md
+
+Sketchbook/.DS_Store
