@@ -35,7 +35,6 @@
 
 const int dallasPin     = 2;
 const int dht11Pin      = 9;
-const int SDchipSelect  = 4;
 
 // DHT11 temperature sensor setup
 dht11 DHT11;
@@ -98,13 +97,16 @@ void discoverOneWireDevices(void) {
 #endif
 
 void captureBMP180(){
-
+/*
 	sensors_event_t event;
 	bmp.getEvent(&event);
 
     if (event.pressure)
 		insidePressure = event.pressure;
-	
+ */
+    bmp.getPressure((float*)&insidePressure);
+    insidePressure/=100;
+    bmp.getTemperature((float*)&insideTemperature);
 }
 
 void captureDallasTemperature(){
@@ -117,9 +119,8 @@ void captureDallasTemperature(){
 void captureDHT11Temperature(){
 
 	int chk = DHT11.read(dht11Pin);
-
 	insideHumidity = DHT11.humidity;
-	insideTemperature = DHT11.temperature;
+	//insideTemperature = DHT11.temperature;
 
 }
 
@@ -129,7 +130,7 @@ void setup()
 	pinMode(dht11Pin, INPUT);
 	bmp.begin();
 	
-	Serial.begin(9600);
+	//Serial.begin(9600);
 	delay(2000);
     
     #ifdef DISCOVER_ONE_WIRE_DEVICES
