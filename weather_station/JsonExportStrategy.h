@@ -45,22 +45,22 @@ public:
 		char indoorPressure[8];
 		dtostrf(_indoorPressure, 2, 1, indoorPressure);
 
-		String	str = String("{\"iT\":\"");
+		String	str = String("{\"iT\":");
 				str.concat(indoorTemperature);
-				str.concat("\",\"oT\":\"");
+				str.concat(",\"oT\":");
 				str.concat(outdoorTemperature);
-				str.concat("\",\"iH\":\"");
+				str.concat(",\"iH\":");
 				str.concat(indoorHumidity);
-				str.concat("\",\"iP\":\"");
+				str.concat(",\"iP\":");
 				str.concat(indoorPressure);
-				str.concat("\"}");
+				str.concat("}");
 		
 		return str;
 	}
     
     virtual void deliverTo(EthernetClient * client){
         
-            client->println("HTTP/1.1 200 OK\nContent-Type: text\nConnection: close\nRefresh: 5\n");
+            client->println("HTTP/1.1 200 OK\nContent-Type: text\nConnection: close\n");
 
             client->println(this->jsonize());
          
