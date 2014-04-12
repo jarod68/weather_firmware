@@ -26,11 +26,7 @@
 #define ico_12_address 5
 
  uint8_t	LCDWeatherDisplay	::	up_right_arrow	[8] = { 0x00, 0x0f, 0x03, 0x05, 0x09, 0x10, 0x00	};
- uint8_t	LCDWeatherDisplay	::	down_left_arrow	[8] = { 0x00, 0x01, 0x12, 0x14, 0x18, 0x1e, 0x00	};
- uint8_t	LCDWeatherDisplay	::	up_left_arrow	[8] = { 0x00, 0x1e, 0x18, 0x14, 0x12, 0x01, 0x00	};
  uint8_t	LCDWeatherDisplay	::	down_right_arrow[8] = { 0x00, 0x10, 0x09, 0x05, 0x03, 0x0f, 0x00	};
- uint8_t	LCDWeatherDisplay	::	degres			[8] = { 0x1c, 0x14, 0x1c, 0x00, 0x00, 0x00, 0x00	};
-
  uint8_t	LCDWeatherDisplay	::	sun_00			[9] = { 0x00, 0x00, 0x04, 0x02, 0x01, 0x00, 0x01, 0x1f };
  uint8_t	LCDWeatherDisplay	::	sun_01			[9] = { 0x04, 0x04, 0x04, 0x04, 0x0e, 0x11, 0x00, 0x00 };
  uint8_t	LCDWeatherDisplay	::	sun_02			[9] = { 0x00, 0x00, 0x04, 0x08, 0x10, 0x00, 0x10, 0x1e };
@@ -73,7 +69,6 @@ void	LCDWeatherDisplay	::	display	()
 	lcd->print("In");
 	lcd->setCursor(4, 0);
 	lcd->print("temp = " + doubleToString(getIndoorTemperature())+' ');
-	displayDegres(); 
 	lcd->print('c');
 	lcd->setCursor(19, 0);
 
@@ -104,7 +99,7 @@ void	LCDWeatherDisplay	::	display	()
 	lcd->print("Out");
 	lcd->setCursor(4, 3);
 	lcd->print("temp = " + doubleToString(getOutdoorTemperature())+' ');
-	displayDegres(); lcd->print('c');
+    lcd->print('c');
 	lcd->setCursor(19, 3);
 	if (_inference->getOutdoorTemperatureTendency() == Rising)
 		displayUpArrow();
@@ -148,12 +143,6 @@ void	LCDWeatherDisplay::displayDownArrow()
 	
 
 	lcd->write(down_right_cross_address);
-}
-void	LCDWeatherDisplay::displayDegres()
-{
-	//lcd->createChar(ico_00_address, degres);
-
-	//lcd->write(ico_00_address);
 }
 
 void	LCDWeatherDisplay::displaySun(const unsigned int	line, const unsigned int row)

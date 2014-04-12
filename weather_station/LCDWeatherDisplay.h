@@ -32,7 +32,6 @@ public:
 	virtual		void	displayRain		(const unsigned int	line, const unsigned int row);
 	virtual		void	displayUpArrow	();
 	virtual		void	displayDownArrow();
-	virtual		void	displayDegres	();
 
 	inline		String	doubleToString	(const double		_double);
 
@@ -42,8 +41,6 @@ private:
 	WeatherInference<double>	*	_inference;
 
 	static		uint8_t		up_right_arrow	[];
-	static		uint8_t		down_left_arrow	[];
-	static		uint8_t		up_left_arrow	[];
 	static		uint8_t		down_right_arrow[];
 	static		uint8_t		degres			[];
 	static		uint8_t		sun_00			[];
